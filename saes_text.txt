@@ -1,0 +1,30 @@
+---PAGE 1---
+Simplified AES (S-AES) – Numerical ExampleS-AES is a simplified version of the AES algorithm used for teaching cryptography concepts. It works on:●16-bit plaintext●16-bit key●2 rounds of encryption●Operations: SubNib, ShiftRow, MixColumn, AddRoundKeyBelow is a step-by-step numerical example commonly used in textbooks.ExamplePlaintext:1101 0111 0010 1000Key:0100 1010 1111 0101Step 1: Key GenerationThe 16-bit key is divided into two bytes.K = 01001010 11110101w0       w1Using S-AES key schedule we generate:w2 = w0 ⊕ g(w1)w3 = w2 ⊕ w1w4 = w2 ⊕ g(w3)
+
+---PAGE 2---
+w5 = w4 ⊕ w3After substitution and XOR operations we obtain:Round Key 0 (K0)01001010 11110101Round Key 1 (K1)11011101 00101000Round Key 2 (K2)10000111 10101111Step 2: Initial AddRoundKeyPlaintext:1101 0111 0010 1000Round Key 0:0100 1010 1111 0101XOR operation:1101011100101000⊕ 0100101011110101-------------------1001110111011101State Matrix:1001 11011101 1101Step 3: SubNib (Substitution)Each 4-bit nibble is replaced using S-Box.Example substitution:
+
+---PAGE 3---
+1001 → 00101101 → 1110After substitution:0010 11101110 1110Step 4: ShiftRowSecond row is shifted left.Before:0010 11101110 1110After shift:0010 11101110 1110(In this case both values same so it appears unchanged.)Step 5: MixColumnMatrix multiplication in GF(2) is performed.Matrix used:1 44 1After MixColumn calculation:0100 11000011 1011
+
+---PAGE 4---
+The MixColumn step in Simplified AES (S-AES) mixes the two columns of the state matrix using matrix multiplication in GF(24)GF(2^4)GF(24).1️ MixColumn TransformationThe column vector is multiplied by the matrix:\begin{bmatrix}1 & 4 \ 4 & 1\end{bmatrix}So for a column:[S0S1]\begin{bmatrix} S_0 \\ S_1 \end{bmatrix}[S0​S1​​]New values becomeS0′=(1×S0)⊕(4×S1)S1′=(4×S0)⊕(1×S1)\begin{aligned} S'_0 &= (1 \times S_0) \oplus (4 \times S_1) \\ S'_1 &= (4 \times S_0) \oplus (1 \times S_1) \end{aligned}S0′​S1′​​=(1×S0​)⊕(4×S1​)=(4×S0​)⊕(1×S1​)​All operations are done in GF(24)GF(2^4)GF(24) using the irreducible polynomialx4+x+1x^4 + x + 1x4+x+1Example CalculationAssume the state matrix after ShiftRow is:4  C3  BBinary representation:HexBinary40100C110030011B1011
+
+---PAGE 5---
+We calculate column by column.Step 1: First Column CalculationColumn:43Calculate first elementS0′=(1×4)⊕(4×3)S'_0 = (1 × 4) ⊕ (4 × 3)S0′​=(1×4)⊕(4×3)1 × 401004 × 34 = x2x^2x2 3 = x+1x+1x+1x2(x+1)=x3+x2x^2(x+1) = x^3 + x^2x2(x+1)=x3+x2Binary1100  = CXOR0100⊕1100-----1000Result:8Calculate second elementS1′=(4×4)⊕(1×3)S'_1 = (4 × 4) ⊕ (1 × 3)S1′​=(4×4)⊕(1×3)4 × 4
+
+---PAGE 6---
+0100 × 0100Polynomial:x2×x2=x4x^2 × x^2 = x^4x2×x2=x4Reduce usingx4=x+1x^4 = x + 1x4=x+1Binary0011XOR0011⊕0011-----0000Result:0First column after MixColumn:80Step 2: Second Column CalculationColumn:CBFirst elementS0′=(1×C)⊕(4×B)S'_0 = (1 × C) ⊕ (4 × B)S0′​=(1×C)⊕(4×B)1 × C1100
+
+---PAGE 7---
+4 × B0100 × 1011Polynomial:x²(x³ + x +1)= x + x³ + x²Reducing with x4+x+1x^4+x+1x4+x+1:Result0101XOR1100⊕0101-----1001Result9Second elementS1′=(4×C)⊕(1×B)S'_1 = (4 × C) ⊕ (1 × B)S1′​=(4×C)⊕(1×B)4 × C0100 × 1100Polynomial:x²(x³ + x²)= x + xReduce:Result0110XOR0110⊕1011
+
+---PAGE 8---
+-----1101ResultDFinal MixColumn Output8  90  DStep 6: Add Round Key 1State:01001100 00111011Round Key 1:11011101 00101000XOR:0100110000111011⊕1101110100101000------------------1001000100010011Step 7: Round 2SubNib1001 → 0010
+
+---PAGE 9---
+0001 → 0100Result:0010 01000100 1100ShiftRow0010 01001100 0100Add Round Key 2State:0010010011000100Round Key 2:1000011110101111XOR:0010010011000100⊕1000011110101111------------------1010001101101011Final Ciphertext1010 0011 0110 1011Final ResultInputValuePlaintext1101011100101000
+
+---PAGE 10---
+Key0100101011110101Ciphertext1010001101101011
+
